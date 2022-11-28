@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-function Cell({value, setValue: {cords, board, setBoard}, ...props}) {
+function Cell({value, setValue: {cords, board, setBoard}, user, setUser, ...props}) {
     const borderProps = ["borderRTL", "borderRTR", "borderRBL", "borderRBR", "btop", "bleft", "bright", "bbottom"];
-    const cellColors = ["black", "red", "green"];
+    const cellColors = ["black", "red", "green", "blue"];
     const generateCellClassName = () => {
         return borderProps.reduce((acc, cur) => (`${acc + ((props[cur]) ? cur : "")} `), "cell ");
     }
@@ -23,7 +23,8 @@ function Cell({value, setValue: {cords, board, setBoard}, ...props}) {
     const handleDotClick = ({x, y}, board) => {
         const clonedBoard = cloneArray(board);
         console.log("x, y", x, y);
-        clonedBoard[y][x] = 2;
+        clonedBoard[y][x] = (user) ? 2 : 1;
+        setUser(user => !user);
         setBoard([...clonedBoard]); 
     }
 
