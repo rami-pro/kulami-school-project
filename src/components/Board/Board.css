@@ -1,0 +1,59 @@
+.cell {
+  width: 80px;
+  height: 80px;
+  border-color: rgba(64, 64, 64, 0.9);
+  border-width: 4px;
+  border-style: solid;
+}
+
+
+.borderRTL {
+  border-top-left-radius: 20px;
+}
+
+.borderRTR {
+  border-top-right-radius: 20px;
+}
+
+.borderRBL {
+  border-bottom-left-radius: 20px;
+}
+
+.borderRBR {
+  border-bottom-right-radius: 20px;
+}
+
+.btop {
+  border-top: 0;
+}
+
+.bleft {
+  border-left: 0;
+}
+
+.bright {
+  border-right: 0;
+}
+
+.bbottom {
+  border-bottom: 0;
+}
+
+.dot {
+  width: 40px;
+  height: 40px;
+  background-color: rgba(36, 35, 35, 0.506);
+  position: relative;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.dot-green {
+  background-color: rgba(81, 255, 1, 0.85);
+}
+
+.dot-red {
+  background-color: rgba(255, 63, 63, 0.856);
+}
