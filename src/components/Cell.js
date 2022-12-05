@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-function Cell({value, setValue: {cords, board, setBoard}, user, setUser, ...props}) {
+function Cell({ value, setValue: { cords, board, setBoard }, user, setUser, ...props }) {
     const borderProps = ["borderRTL", "borderRTR", "borderRBL", "borderRBR", "btop", "bleft", "bright", "bbottom"];
     const cellColors = ["black", "red", "green", "blue"];
     const generateCellClassName = () => {
@@ -19,19 +19,19 @@ function Cell({value, setValue: {cords, board, setBoard}, user, setUser, ...prop
 
     const cloneArray = (arr = []) => {
         return arr.map(e => [...e]);
-    } 
-    const handleDotClick = ({x, y}, board) => {
+    }
+    const handleDotClick = ({ x, y }, board) => {
         const clonedBoard = cloneArray(board);
         console.log("x, y", x, y);
         clonedBoard[y][x] = (user) ? 2 : 1;
         setUser(user => !user);
-        setBoard([...clonedBoard]); 
+        setBoard([...clonedBoard]);
     }
 
-    useEffect(() => {
-        console.log("cords.... ", cords)
-        console.log("value.... ", value)
-    }, [value])
+    // useEffect(() => {
+    //     console.log("cords.... ", cords)
+    //     console.log("value.... ", value)
+    // }, [value])
 
     useEffect(() => {
         console.log(generateDotClassName("red"))

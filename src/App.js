@@ -4,8 +4,19 @@ import { createTheme, CssBaseline, Stack, ThemeProvider } from "@mui/material";
 import Board from "./components/Board";
 import NavBar from "./components/NavBar";
 import Infos from "./components/Infos";
+import PlayerCompo from "./components/Player";
+import BasicModal from "./components/Modal";
 
-const theme = createTheme();
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#8338ec',
+    },
+    secondary: {
+      main: '#ffbe0b',
+    },
+  },
+});
 
 function App() {
   const boardInit = [0, 0, 0, 0, 0, 0, 0, 0];
@@ -18,10 +29,10 @@ function App() {
   // prev == update;
   // current ==
 
-  useEffect(() => {
-    console.log("this is board", board);
-    console.log("this is [0][1]", board[0][1])
-  }, [board])
+  // useEffect(() => {
+  //   console.log("this is board", board);
+  //   console.log("this is [0][1]", board[0][1])
+  // }, [])
   return (
     <>
       <CssBaseline />
@@ -30,9 +41,13 @@ function App() {
           <NavBar />
           <Stack direction="row">
             <Board />
-            <Infos />
+            <Infos>
+              <PlayerCompo player={"player 1"} dark={"dark"} />
+              <PlayerCompo player={"player 2"} />
+            </Infos>
           </Stack>
         </Stack>
+        <BasicModal />
       </ThemeProvider>
     </>
   );

@@ -9,7 +9,7 @@ export const classes = {
 const Infos = styled(Stack)(({ theme }) => ({
     [`&.${classes.root}`]: {
         width: "40vw",
-        backgroundColor: theme.palette.primary.light,
+        backgroundColor: theme.palette.secondary.main,
         height: "92vh"
     }
 }));
