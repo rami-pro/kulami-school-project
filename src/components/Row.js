@@ -1,8 +1,8 @@
-function Row({ children, ...props }) {
+import { Stack } from "@mui/material";
+
+function Row(props) {
     return (
-        <div className="row" {...props}>
-            {children}
-        </div>
+        <Stack className="row" direction={"row"} {...props} />
     );
 }
 
