@@ -1,19 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Stack } from "@mui/material";
 import Cell from "./Cell";
 import Row from "./Row";
 import { useBoardContext, GAME_END } from "./StoreProvider";
 
 function Board() {
-    const { store: { grid: board, next, hasNext, score }, dispatch } = useBoardContext();
+    const { store: { grid: board, hasNext }, dispatch } = useBoardContext();
 
 
     useEffect(() => {
-        console.log("hasNext--", hasNext, score);
         if (!hasNext) {
             dispatch({ type: GAME_END });
         }
-    }, [hasNext, score])
+    }, [hasNext])
 
     return (
         <Stack className="container text-center" justifyContent={"center"} alignItems="center">

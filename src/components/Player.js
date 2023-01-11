@@ -17,12 +17,19 @@ const PlayerStack = styled(Stack)(({ theme, dark }) => {
 });
 
 
-function PlayerCompo({ player, ...props }) {
-    console.log("player", player);
+function PlayerCompo({ playerName, player, current, ...props }) {
+    const iconColor = ["rgba(255, 63, 63, 0.856)", "rgba(81, 255, 1, 0.85)"];
+
     return (
         <PlayerStack className={classes.root} alignItems="center" {...props}>
-            <Toolbar disableGutters sx={{ backgroundColor: "rgb(90, 90, 90)", pl: 1, mt: 2 }}>
-                <AdbIcon sx={{ display: 'flex', mr: 1, color: '#fefefe' }} />
+            <Toolbar disableGutters
+                sx={{
+                    backgroundColor: iconColor[player],
+                    pl: 1, mt: 2, border: `4px solid ${player !== current ? "black" : "white"}`,
+                    color: `${player !== current ? "black" : "white"}`,
+                    borderRadius: "10px"
+                }}>
+                <AdbIcon sx={{ display: 'flex', mr: 1 }} />
                 <Typography
                     variant="h6"
                     noWrap
@@ -33,11 +40,11 @@ function PlayerCompo({ player, ...props }) {
                         fontFamily: 'monospace',
                         fontWeight: 700,
                         letterSpacing: '.3rem',
-                        color: '#fefefe',
+                        color: 'inherit',
                         textDecoration: 'none',
                     }}
                 >
-                    {player?.toUpperCase() ?? "PLAYER"}
+                    {playerName?.toUpperCase() ?? "PLAYER"}
                 </Typography>
             </Toolbar>
         </PlayerStack>

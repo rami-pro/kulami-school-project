@@ -1,6 +1,7 @@
-import * as React from 'react';
+import { useRef, useState } from 'react';
 import { Typography, Stack, Button, Box, Modal, TextField, InputAdornment, styled } from '@mui/material';
 import { AccountCircle } from '@mui/icons-material';
+import { SET_NAMES, useBoardContext } from './StoreProvider';
 
 const style = {
     position: 'absolute',
@@ -16,6 +17,7 @@ const style = {
     color: "white",
     backgroundColor: "rgb(90, 90, 90)"
 };
+
 const options = {
     shouldForwardProp: (prop) => prop !== 'fontColor',
 };
@@ -29,9 +31,22 @@ const StyledTextField = styled(
 }));
 
 export default function BasicModal() {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(true);
+    const { dispatch } = useBoardContext();
+    const refPLayer1 = useRef();
+    const refPLayer2 = useRef();
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const onSave = () => {
+        const p1 = refPLayer1.current.value || "player 1";
+        const p2 = refPLayer2.current.value || "player 2";
+
+        dispatch({ type: SET_NAMES, names: [p1, p2] });
+        setOpen(false);
+    }
+
+
 
     return (
         <div>
@@ -49,6 +64,7 @@ export default function BasicModal() {
                     </Typography>
                     <Stack spacing={2} alignItems={"center"} sx={{ mt: 4 }}>
                         <StyledTextField
+                            inputRef={refPLayer1}
                             fontColor="white"
                             label="Player 1"
                             variant="standard"
@@ -64,6 +80,7 @@ export default function BasicModal() {
                             }}
                         />
                         <StyledTextField
+                            inputRef={refPLayer2}
                             fontColor="white"
                             label="Player 2"
                             variant="standard"
@@ -80,7 +97,7 @@ export default function BasicModal() {
                         />
                     </Stack>
                     <Stack spacing={2} direction="row" justifyContent={"flex-end"} sx={{ mt: 10 }}>
-                        <Button variant="contained">Save & Start playing !</Button>
+                        <Button variant="contained" onClick={onSave}>Save & Start playing !</Button>
                         <Button variant="outlined" sx={{ color: "yellow", borderColor: "yellow" }}>Exit</Button>
                     </Stack>
                 </Box>

@@ -14,22 +14,14 @@ function Cell({ value, cords, ...props }) {
         }
         return `${baseClassName} ${cellColors.includes(color) ? `dot-${color}` : ""}`;
     }
-    const [cellClassName, setCellClassName] = useState(generateCellClassName());
-    const [dotClassName, setDotClassName] = useState(generateDotClassName());
 
     const { dispatch, store } = useBoardContext();
-    const { store: { grid: board, next } } = useBoardContext();
+    const { store: { grid: board } } = useBoardContext();
 
     useEffect(() => {
         console.log("this is store", board);
     }, [board]);
 
-    const getValue = (value, cords) => {
-        if (isInCoordinates(cords, next)) {
-            return 3;
-        }
-        return value
-    }
 
 
     useEffect(() => {
@@ -38,10 +30,8 @@ function Cell({ value, cords, ...props }) {
     })
 
     return (
-        <div className={cellClassName}>
+        <div className={generateCellClassName()}>
             <div className={`${generateDotClassName()} ${value === 3 ? "cursor-allowed" : "cursor-not-allowed"}`}
-                onMouseOver={() => setDotClassName(generateDotClassName("red"))}
-                onMouseOut={() => setDotClassName(generateDotClassName())}
                 onClick={() => {
                     if (value === 3) {
                         dispatch({ type: PLACE_ITEM, cords })

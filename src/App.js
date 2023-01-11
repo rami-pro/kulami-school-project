@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
-import "./App.css";
 import { createTheme, CssBaseline, Stack, ThemeProvider } from "@mui/material";
 import Board from "./components/Board";
 import NavBar from "./components/NavBar";
 import Infos from "./components/Infos";
 import PlayerCompo from "./components/Player";
 import BasicModal from "./components/Modal";
-import { BoardProvider } from "./components/StoreProvider";
-import Example from "./example";
+import { WinModal } from "./components/WinModal";
+import { useBoardContext } from "./components/StoreProvider";
+import "./App.css";
 
 const theme = createTheme({
   palette: {
@@ -21,27 +20,24 @@ const theme = createTheme({
 });
 
 function App() {
+  const { store: { current, names } } = useBoardContext();
 
   return (
     <>
       <CssBaseline />
       <ThemeProvider theme={theme}>
-        <BoardProvider>
-          <Stack className="App">
-            <NavBar />
-            <Stack direction="row">
-              <Board />
-              <Infos>
-                <PlayerCompo player={"player 1"} dark={"dark"} />
-                <PlayerCompo player={"player 2"} />
-              </Infos>
-            </Stack>
-            <Stack direction="row">
-              <Example msg={"nik mok"} />
-            </Stack>
+        <Stack className="App">
+          <NavBar />
+          <Stack direction="row">
+            <Board />
+            <Infos>
+              <PlayerCompo playerName={names[0] || "player 1"} dark={"dark"} player={0} current={current} />
+              <PlayerCompo playerName={names[1] || "player 2"} player={1} current={current} />
+            </Infos>
           </Stack>
-          <BasicModal />
-        </BoardProvider>
+        </Stack>
+        <BasicModal />
+        <WinModal />
       </ThemeProvider>
     </>
   );

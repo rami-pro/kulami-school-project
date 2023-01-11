@@ -11,12 +11,14 @@ const initialState = {
     lastPlay: null,
     player: [3, 3], //nombre de billes restantes pour chacun
     hasNext: true,
-    score: [0, 0]
+    score: [0, 0],
+    names: ["player 1", "player 2"]
 };
 
 // EVENTS
 export const PLACE_ITEM = "PLACE_ITEM";
 export const SHOW_NEXT = "SHOW_NEXT";
+export const SET_NAMES = "SET_NAMES";
 export const GAME_END = "GAME_END";
 export const NEXT = "NEXT";
 export const INIT = "INIT";
@@ -77,12 +79,14 @@ export function boardReducer(state, action) {
             const next = getNext(state.grid, state.lastPlay, getPredicate(getTileFromCords(state.lastPlay)));
             const player = (state.current === 1) ? 0 : 1;
             return { ...state, next, hasNext: hasNext(next, state.player[player]) };
+        case SET_NAMES:
+            return { ...state, names: action.names };
         case NEXT:
             return { ...state, grid: setAvailableInCoordinates(state.grid, state.next) };
         case GAME_END:
             return { ...state, score: calcScore(state.grid) };
         case INIT:
-            return initialState;
+            return { ...initialState, names: state.names };
         default:
             return state;
     }
