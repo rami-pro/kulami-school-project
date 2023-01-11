@@ -37,7 +37,7 @@ export default function BasicModal() {
         <div>
             <Button onClick={handleOpen}>Open modal</Button>
             <Modal
-                open={true}
+                open={open}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"

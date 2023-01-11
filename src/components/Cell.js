@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import { useBoardContext, PLACE_ITEM, SHOW_NEXT, isInCoordinates, NEXT } from "./StoreProvider";
 
-function Cell({ value, setValue: { cords, board, setBoard }, user, setUser, ...props }) {
+function Cell({ value, cords, ...props }) {
     const borderProps = ["borderRTL", "borderRTR", "borderRBL", "borderRBR", "btop", "bleft", "bright", "bbottom"];
     const cellColors = ["black", "red", "green", "blue"];
     const generateCellClassName = () => {
@@ -11,38 +12,43 @@ function Cell({ value, setValue: { cords, board, setBoard }, user, setUser, ...p
         if (!color) {
             return baseClassName;
         }
-
         return `${baseClassName} ${cellColors.includes(color) ? `dot-${color}` : ""}`;
     }
     const [cellClassName, setCellClassName] = useState(generateCellClassName());
     const [dotClassName, setDotClassName] = useState(generateDotClassName());
 
-    const cloneArray = (arr = []) => {
-        return arr.map(e => [...e]);
-    }
-    const handleDotClick = ({ x, y }, board) => {
-        const clonedBoard = cloneArray(board);
-        console.log("x, y", x, y);
-        clonedBoard[y][x] = (user) ? 2 : 1;
-        setUser(user => !user);
-        setBoard([...clonedBoard]);
-    }
-
-    // useEffect(() => {
-    //     console.log("cords.... ", cords)
-    //     console.log("value.... ", value)
-    // }, [value])
+    const { dispatch, store } = useBoardContext();
+    const { store: { grid: board, next } } = useBoardContext();
 
     useEffect(() => {
-        console.log(generateDotClassName("red"))
-    }, [])
+        console.log("this is store", board);
+    }, [board]);
+
+    const getValue = (value, cords) => {
+        if (isInCoordinates(cords, next)) {
+            return 3;
+        }
+        return value
+    }
+
+
+    useEffect(() => {
+        console.log("store...", store)
+        console.log("coords-value", cords, value);
+    })
 
     return (
         <div className={cellClassName}>
-            <div className={dotClassName}
+            <div className={`${generateDotClassName()} ${value === 3 ? "cursor-allowed" : "cursor-not-allowed"}`}
                 onMouseOver={() => setDotClassName(generateDotClassName("red"))}
                 onMouseOut={() => setDotClassName(generateDotClassName())}
-                onClick={() => handleDotClick(cords, board)}
+                onClick={() => {
+                    if (value === 3) {
+                        dispatch({ type: PLACE_ITEM, cords })
+                        dispatch({ type: SHOW_NEXT })
+                        dispatch({ type: NEXT })
+                    }
+                }}
             ></div>
         </div>
     );

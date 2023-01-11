@@ -6,6 +6,7 @@ import NavBar from "./components/NavBar";
 import Infos from "./components/Infos";
 import PlayerCompo from "./components/Player";
 import BasicModal from "./components/Modal";
+import { BoardProvider } from "./components/StoreProvider";
 
 const theme = createTheme({
   palette: {
@@ -19,35 +20,24 @@ const theme = createTheme({
 });
 
 function App() {
-  const boardInit = [0, 0, 0, 0, 0, 0, 0, 0];
-  const [prevBoard, setPrevBoard] = useState(boardInit.map(() => [...boardInit]));
-  const [board, setBoard] = useState(boardInit.map(() => [...boardInit]));
-  const [user0, setUser0] = useState(true);
 
-  // prev == current;
-  // current == xxxyyy;
-  // prev == update;
-  // current ==
-
-  // useEffect(() => {
-  //   console.log("this is board", board);
-  //   console.log("this is [0][1]", board[0][1])
-  // }, [])
   return (
     <>
       <CssBaseline />
       <ThemeProvider theme={theme}>
-        <Stack className="App">
-          <NavBar />
-          <Stack direction="row">
-            <Board />
-            <Infos>
-              <PlayerCompo player={"player 1"} dark={"dark"} />
-              <PlayerCompo player={"player 2"} />
-            </Infos>
+        <BoardProvider>
+          <Stack className="App">
+            <NavBar />
+            <Stack direction="row">
+              <Board />
+              <Infos>
+                <PlayerCompo player={"player 1"} dark={"dark"} />
+                <PlayerCompo player={"player 2"} />
+              </Infos>
+            </Stack>
           </Stack>
-        </Stack>
-        <BasicModal />
+          <BasicModal />
+        </BoardProvider>
       </ThemeProvider>
     </>
   );

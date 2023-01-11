@@ -51,8 +51,17 @@ body {
     position: relative;
     left: 50%;
     top: 50%;
+    cursor: pointer;
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+}
+
+.cursor-allowed {
+    cursor: pointer;
+}
+
+.cursor-not-allowed {
+    cursor: not-allowed;
 }
 
 .dot-green {
