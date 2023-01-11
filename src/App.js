@@ -7,6 +7,7 @@ import Infos from "./components/Infos";
 import PlayerCompo from "./components/Player";
 import BasicModal from "./components/Modal";
 import { BoardProvider } from "./components/StoreProvider";
+import Example from "./example";
 
 const theme = createTheme({
   palette: {
@@ -34,6 +35,9 @@ function App() {
                 <PlayerCompo player={"player 1"} dark={"dark"} />
                 <PlayerCompo player={"player 2"} />
               </Infos>
+            </Stack>
+            <Stack direction="row">
+              <Example msg={"nik mok"} />
             </Stack>
           </Stack>
           <BasicModal />
