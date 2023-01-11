@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./app.css";
+import "./App.css";
 import { createTheme, CssBaseline, Stack, ThemeProvider } from "@mui/material";
 import Board from "./components/Board";
 import NavBar from "./components/NavBar";
