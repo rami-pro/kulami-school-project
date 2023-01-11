@@ -2,7 +2,7 @@ import React, { createContext, useReducer, useContext } from "react";
 
 export const BoardContext = createContext();
 
-// Initial state
+// Initial state (store)
 const boardInit = [3, 3, 3, 3, 3, 3, 3, 3];
 const initialState = {
     current: 0,
@@ -14,13 +14,14 @@ const initialState = {
     score: [0, 0]
 };
 
-// Actions
+// EVENTS
 export const PLACE_ITEM = "PLACE_ITEM";
 export const SHOW_NEXT = "SHOW_NEXT";
 export const GAME_END = "GAME_END";
 export const NEXT = "NEXT";
 export const INIT = "INIT";
 
+//calcul score final => [score 1, score 2];
 function calcScore(matrix) {
     const player = [0, 0];
 
@@ -32,31 +33,33 @@ function calcScore(matrix) {
     return player;
 }
 
+
+// { player, score } player qui a gagné et le score qu'il a
 function calcScoreFromTile(tile, matrix) {
-    const coords = getCordsFromTile(tile);
-    const player = [0, 0];
+    const coords = getCordsFromTile(tile); // [[x, y], [x, y]...]
+    const playerScore = [0, 0];
+
+
+    //case rouge <==> value == 1 <==> player 1
+    //case verte <==> value == 2 <==> player 2
 
     coords.forEach(e => {
-        const value = matrix[e[0]][e[1]];
+        const [x, y] = e;
+        const value = matrix[x][y];
         switch (value) {
             case 1:
-                player[0]++;
+                playerScore[0]++;
                 break;
             case 2:
-                player[1]++;
+                playerScore[1]++;
                 break;
         }
     });
 
     return {
-        player: player[0] > player[1] ? 0 : 1,
-        score: player[0] === player[1] ? 0 : coords.length
+        player: playerScore[0] > playerScore[1] ? 0 : 1,
+        score: playerScore[0] === playerScore[1] ? 0 : coords.length
     }
-}
-
-// Action creators
-export function addTodo(text) {
-    return { type: PLACE_ITEM, text };
 }
 
 // Reducer
@@ -84,12 +87,13 @@ export function boardReducer(state, action) {
             return state;
     }
 }
-console.log("tile of 3, 5", getTileFromCords([5, 3]))
 
+//pour update la matrice carré et que l'app puisse se mettre à jour
 function clone2DArray(arr) {
     return arr.map(innerArray => innerArray.slice());
 }
 
+//mettre à jour les points sur les quels on peut jouer
 function setAvailableInCoordinates(matrix, coordinates) {
     const newArray = matrix.map((row, i) => row.map((cell, j) => {
         const point = [i, j];
@@ -99,7 +103,7 @@ function setAvailableInCoordinates(matrix, coordinates) {
 
 }
 
-
+//pour initialiser next;
 function getAllCoordinates() {
     const coordinates = [];
     for (let x = 0; x < 8; x++) {
@@ -109,6 +113,7 @@ function getAllCoordinates() {
     }
     return coordinates;
 }
+
 
 function placeItem(player, cords, matrix, next) {
     console.log("player--", player)
@@ -124,6 +129,7 @@ function placeItem(player, cords, matrix, next) {
     return matrix;
 }
 
+
 function isInCoordinates(point, coordinates) {
     return coordinates.some(([x, y]) => x === point[0] && y === point[1]);
 }
@@ -131,16 +137,14 @@ function isInCoordinates(point, coordinates) {
 
 function getPredicate(tile) {
     const tileNumber = getCordsFromTile(tile);
-    console.log("tile-----", tileNumber, tile);
 
     return ([x, y]) => {
         return !tileNumber.some(e => e[0] === x && e[1] === y);
     }
 }
 
-function hasNext(next, playerScore) {
-    console.log("hasNext--", next.length, next)
-    if (playerScore === 0 || next.length === 0) {
+function hasNext(next, ballsLeft) {
+    if (ballsLeft === 0 || next.length === 0) {
         return false
     }
     return true;
