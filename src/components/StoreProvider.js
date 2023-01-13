@@ -9,7 +9,8 @@ const initialState = {
     grid: boardInit.map(() => [...boardInit]),
     next: getAllCoordinates(),
     lastPlay: null,
-    player: [3, 3], //nombre de billes restantes pour chacun
+    beforeLastPlay: null,
+    player: [5, 5], //nombre de billes restantes pour chacun
     hasNext: true,
     score: [0, 0],
     names: ["player 1", "player 2"]
@@ -72,13 +73,12 @@ export function boardReducer(state, action) {
             players[state.current]--;
             const cords = action.cords;
             return {
-                ...state, grid: placeItem(state.current, cords, state.grid, state.next),
+                ...state, grid: placeItem(state.current, cords, state.grid, state.next), beforeLastPlay: state.lastPlay,
                 lastPlay: cords, current: (state.current === 1) ? 0 : 1, player: players
             };
         case SHOW_NEXT:
-            const next = getNext(state.grid, state.lastPlay, getPredicate(getTileFromCords(state.lastPlay)));
-            const player = (state.current === 1) ? 0 : 1;
-            return { ...state, next, hasNext: hasNext(next, state.player[player]) };
+            const next = getNext(state.grid, state.lastPlay, getPredicate(getTileFromCords(state.lastPlay), getTileFromCords(state.beforeLastPlay)));
+            return { ...state, next, hasNext: hasNext(next, state.player) };
         case SET_NAMES:
             return { ...state, names: action.names };
         case NEXT:
@@ -139,8 +139,13 @@ function isInCoordinates(point, coordinates) {
 }
 
 
-function getPredicate(tile) {
-    const tileNumber = getCordsFromTile(tile);
+function getPredicate(...tiles) {
+    const tileNumber = tiles.reduce((acc, cur) => {
+        if (cur === null) {
+            return acc;
+        }
+        return [...acc, ...getCordsFromTile(cur)];
+    }, []);
 
     return ([x, y]) => {
         return !tileNumber.some(e => e[0] === x && e[1] === y);
@@ -148,7 +153,7 @@ function getPredicate(tile) {
 }
 
 function hasNext(next, ballsLeft) {
-    if (ballsLeft === 0 || next.length === 0) {
+    if ((ballsLeft[0] === 0 && ballsLeft[1] === 0) || next.length === 0) {
         return false
     }
     return true;
@@ -157,7 +162,7 @@ function hasNext(next, ballsLeft) {
 function getNext(matrix, point, predicate) {
     const [x, y] = point;
     const horizontalCoordinates = matrix[x].reduce((coordinates, val, i) => {
-        console.log("loop", [i, y], predicate([i, y]), matrix[i][y], val)
+        console.log("loop", [i, y], predicate([i, y]), matrix[i][y])
         if ((matrix[i][y] === 0 || matrix[i][y] === 3) && predicate([i, y])) {
             coordinates.push([i, y]);
         }
@@ -196,7 +201,11 @@ function getTileFromCords(cord) {
         '3,6': 15, '3,7': 15, '4,6': 15, '4,7': 15, '5,6': 15, '5,7': 15,
         '6,6': 16, '6,7': 16, '7,6': 16, '7,7': 16
     };
-    let cordString = cord.join(',');
+    let cordString = cord ? cord.join(',') : "";
+
+    if (reverseLookup[cordString] === 0) {
+        return 0;
+    }
     return reverseLookup[cordString] || -1;
 }
 

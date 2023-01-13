@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useBoardContext, PLACE_ITEM, SHOW_NEXT, isInCoordinates, NEXT } from "./StoreProvider";
 
 function Cell({ value, cords, ...props }) {
@@ -15,19 +14,7 @@ function Cell({ value, cords, ...props }) {
         return `${baseClassName} ${cellColors.includes(color) ? `dot-${color}` : ""}`;
     }
 
-    const { dispatch, store } = useBoardContext();
-    const { store: { grid: board } } = useBoardContext();
-
-    useEffect(() => {
-        console.log("this is store", board);
-    }, [board]);
-
-
-
-    useEffect(() => {
-        console.log("store...", store)
-        console.log("coords-value", cords, value);
-    })
+    const { dispatch } = useBoardContext();
 
     return (
         <div className={generateCellClassName()}>
