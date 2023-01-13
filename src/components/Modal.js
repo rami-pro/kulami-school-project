@@ -97,7 +97,7 @@ export default function BasicModal() {
                     </Stack>
                     <Stack spacing={2} direction="row" justifyContent={"flex-end"} sx={{ mt: 10 }}>
                         <Button variant="contained" onClick={onSave}>Save & Start playing !</Button>
-                        <Button variant="outlined" sx={{ color: "yellow", borderColor: "yellow" }}>Exit</Button>
+                        <Button variant="outlined" sx={{ color: "yellow", borderColor: "yellow" }} onClick={() => setOpen(prev => !prev)}>Exit</Button>
                     </Stack>
                 </Box>
             </Modal>

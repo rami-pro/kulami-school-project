@@ -14,13 +14,13 @@ function Cell({ value, cords, ...props }) {
         return `${baseClassName} ${cellColors.includes(color) ? `dot-${color}` : ""}`;
     }
 
-    const { dispatch } = useBoardContext();
+    const { dispatch, store: { hasNext } } = useBoardContext();
 
     return (
         <div className={generateCellClassName()}>
             <div className={`${generateDotClassName()} ${value === 3 ? "cursor-allowed" : "cursor-not-allowed"}`}
                 onClick={() => {
-                    if (value === 3) {
+                    if (value === 3 && hasNext) {
                         dispatch({ type: PLACE_ITEM, cords })
                         dispatch({ type: SHOW_NEXT })
                         dispatch({ type: NEXT })

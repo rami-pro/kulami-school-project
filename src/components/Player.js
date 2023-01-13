@@ -10,7 +10,7 @@ export const classes = {
 const PlayerStack = styled(Stack)(({ theme, dark }) => {
     return ({
         [`&.${classes.root}`]: {
-            backgroundColor: dark ? theme.palette.secondary.dark : theme.palette.secondary.main,
+            backgroundColor: theme.palette.secondary.main,
             height: "46vh"
         }
     })
@@ -21,12 +21,13 @@ function PlayerCompo({ playerName, player, current, ...props }) {
     const iconColor = ["rgba(255, 63, 63, 0.856)", "rgba(81, 255, 1, 0.85)"];
 
     return (
+        player === current &&
         <PlayerStack className={classes.root} alignItems="center" {...props}>
             <Toolbar disableGutters
                 sx={{
                     backgroundColor: iconColor[player],
-                    pl: 1, mt: 2, border: `4px solid ${player !== current ? "black" : "white"}`,
-                    color: `${player !== current ? "black" : "white"}`,
+                    pl: 1, mt: 2, border: `4px solid black`,
+                    color: `black`,
                     borderRadius: "10px"
                 }}>
                 <AdbIcon sx={{ display: 'flex', mr: 1 }} />
